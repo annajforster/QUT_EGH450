@@ -7,34 +7,34 @@ This project leverages several submodules forked from the QUTAS GitHub repositor
 **GitHub Push and Pull Request Process**
 
 **1. Fork the Repository:**
-   * Create a personal copy of the original repository.
-   * 
+Create a personal copy of the original repository.
+
 **2. Create a New Branch:**
-   * Within your forked repository, create a new branch.
+Within your forked repository, create a new branch.
 
 **3. Make Changes:**
-   * Work on your changes in the new branch.
+Work on your changes in the new branch.
 
 **4. Commit Changes:**
-   * Commit your changes with a clear message.
+Commit your changes with a clear message.
 
 **5. Push to Your Fork:**
-   * Push your changes to your forked repository.
+Push your changes to your forked repository.
 
 **6. Create a Pull Request:**
-   * Initiate a pull request to merge your changes into the original repository.
+Initiate a pull request to merge your changes into the original repository.
 
 **7. Review and Discussion:**
-   * Engage in discussions with maintainers to address feedback or questions.
+Engage in discussions with maintainers to address feedback or questions.
 
 **8. Merge or Close:**
-   * If approved, the pull request will be merged. Otherwise, it will be closed.
+If approved, the pull request will be merged. Otherwise, it will be closed.
 
 **Additional Tips:**
 
-- **Use descriptive commit messages.**
-- **Keep branches up-to-date with the original repository.**
-- **Be responsive to feedback and discussions.**
+* **Use descriptive commit messages.**
+* **Keep branches up-to-date with the original repository.**
+* **Be responsive to feedback and discussions.**
 
 **Example Markdown for a Pull Request:**
 ```markdown
