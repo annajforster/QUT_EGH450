@@ -7,7 +7,7 @@ This project leverages several submodules forked from the QUTAS GitHub repositor
 **GitHub Push and Pull Request Process:**
 
 **1. Fork the Repository:**
-Create a personal copy of the original repository.
+Create a personal copy of the original repository. (if you're a Group 2 member, THIS ONE)
 
 **2. Create a New Branch:**
 Within your forked repository, create a new branch.
