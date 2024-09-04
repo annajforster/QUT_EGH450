@@ -8,18 +8,25 @@ This project leverages several submodules forked from the QUTAS GitHub repositor
 
 **1. Fork the Repository:**
    * Create a personal copy of the original repository.
+   * 
 **2. Create a New Branch:**
    * Within your forked repository, create a new branch.
+
 **3. Make Changes:**
    * Work on your changes in the new branch.
+
 **4. Commit Changes:**
    * Commit your changes with a clear message.
+
 **5. Push to Your Fork:**
    * Push your changes to your forked repository.
+
 **6. Create a Pull Request:**
    * Initiate a pull request to merge your changes into the original repository.
+
 **7. Review and Discussion:**
    * Engage in discussions with maintainers to address feedback or questions.
+
 **8. Merge or Close:**
    * If approved, the pull request will be merged. Otherwise, it will be closed.
 
