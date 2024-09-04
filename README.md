@@ -4,7 +4,7 @@ This project leverages several submodules forked from the QUTAS GitHub repositor
 
 ## **Contributing:**
 
-**GitHub Push and Pull Request Process**
+**GitHub Push and Pull Request Process:**
 
 **1. Fork the Repository:**
 Create a personal copy of the original repository.
@@ -51,12 +51,11 @@ This pull request adds a new feature to the project.
 
 ## **Submodules**
 
-### DEPTH AI PUBLISHER
-* **Description:** This submodule is essential for enabling the UAV to perceive targets and navigate to encompass it's entire environment. It includes ROS publisher nodes that publish critical information to the SPAR submodule for localisation and target navigation.
+### DEPTH AI PUBLISHER**Description:** This submodule is essential for enabling the UAV to perceive targets and navigate to encompass it's entire environment. It includes ROS publisher nodes that publish critical information to the SPAR submodule for localisation and target navigation.
 
 
 ### SPAR
-* **Description:** The SPAR submodule houses the software responsible for the UAV's autopilot, navigation, and localisation functions. Key components include:
+**Description:** The SPAR submodule houses the software responsible for the UAV's autopilot, navigation, and localisation functions. Key components include:
     * Breadcrumb path planning service for generating low-level waypoints (TBD)
     * Diversion to preallocated regions of interest (ROI)
     * Localisation of target positions within the world frame
@@ -64,7 +63,7 @@ This pull request adds a new feature to the project.
     * Payload deployment code, which activates servo motors to release a trapdoor
 
 ### QUTAS LAB 450
-* **Description:** This submodule generates the simulated world environment for the QUT GP O-134 flight area. It's primarily a clone of the provided QUT repository, with minor modifications to change the UAV's name and any new environment adjustments
+**Description:** This submodule generates the simulated world environment for the QUT GP O-134 flight area. It's primarily a clone of the provided QUT repository, with minor modifications to change the UAV's name and any new environment adjustments
 
 ### EGH450 TARGET SOLVEPNP
-* **Description:** This submodule is used as the junction between IMP and ANL subsystems to integrate the detected targets into readable coordinates for the UAV to be deployed to. The scripts are utilised within the IMP subsystem to create Publisher/Subscriber nodes for POSE and coordinates for the ANL subsystem to apply within their ROI based operations.
+**Description:** This submodule is used as the junction between IMP and ANL subsystems to integrate the detected targets into readable coordinates for the UAV to be deployed to. The scripts are utilised within the IMP subsystem to create Publisher/Subscriber nodes for POSE and coordinates for the ANL subsystem to apply within their ROI based operations.
