@@ -427,6 +427,12 @@ depthai_publisher_BINARY_DIR:STATIC=/home/uavteam2/QUT_EGH450/build/depthai_publ
 //Value Computed by CMake
 depthai_publisher_SOURCE_DIR:STATIC=/home/uavteam2/QUT_EGH450/src/depthai_publisher
 
+//Value Computed by CMake
+depthai_publisher_updated_BINARY_DIR:STATIC=/home/uavteam2/QUT_EGH450/build/depthai_publisher_updated
+
+//Value Computed by CMake
+depthai_publisher_updated_SOURCE_DIR:STATIC=/home/uavteam2/QUT_EGH450/src/depthai_publisher_updated
+
 //The directory containing a CMake configuration file for dynamic_reconfigure.
 dynamic_reconfigure_DIR:PATH=/opt/ros/noetic/share/dynamic_reconfigure/cmake
 

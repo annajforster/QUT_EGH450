@@ -16,6 +16,3 @@
 [submodule "src/--force"]
 	path = src/--force
 	url = git@github.com:annajforster/depthai_publisher.git
-[submodule "src/depthai_publisher"]
-	path = src/depthai_publisher
-	url = git@github.com:annajforster/depthai_publisher
