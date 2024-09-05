@@ -66,4 +66,4 @@ This pull request adds a new feature to the project.
 * **Description:** This module generates the simulated world environment for the QUT GP O-134 flight area. It's primarily a clone of the provided QUT repository, with minor modifications to change the UAV's name and any new environment adjustments
 
 ### EGH450 TARGET SOLVEPNP
-* **Description:** This module is used as the junction between IMP and ANL subsystems to integrate the detected targets into readable coordinates for the UAV to be deployed to. The scripts are utilised within the IMP subsystem to create Publisher/Subscriber nodes for POSE and coordinates for the ANL subsystem to apply within their ROI based operations.
+* **Description:** This module is used as the junction between IMP and ANL subsystems to integrate the detected targets into readable coordinates for the UAV to be deployed to. The scripts are utilised within the IMP subsystem to create Publisher/Subscriber nodes for POSE and coordinates for the ANL subsystem to apply within their ROI based operations...
