@@ -1,0 +1,8 @@
+prefix=/home/uavteam2/QUT_EGH450/install
+
+Name: spar_node
+Description: Description of spar_node
+Version: 0.0.0
+Cflags: -I${prefix}/include
+Libs: -L${prefix}/lib 
+Requires: 

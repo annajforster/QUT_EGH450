@@ -1,0 +1,8 @@
+prefix=/home/uavteam2/QUT_EGH450/devel
+
+Name: spar_node
+Description: Description of spar_node
+Version: 0.0.0
+Cflags: -I/home/uavteam2/QUT_EGH450/src/spar/spar_node/include
+Libs: -L${prefix}/lib 
+Requires: 
