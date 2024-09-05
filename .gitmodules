@@ -1,0 +1,18 @@
+[submodule "src/spar"]
+	path = src/spar
+	url = git@github.com:annajforster/spar.git
+[submodule "src/breadcrumb"]
+	path = src/breadcrumb
+	url = git@github.com:annajforster/breadcrumb.git
+[submodule "src/depthai_publisher"]
+	path = src/depthai_publisher
+	url = git@github.com:annajforster/depthai_publisher.git
+[submodule "src/qutas_lab_450"]
+	path = src/qutas_lab_450
+	url = git@github.com:annajforster/qutas_lab_450.git
+[submodule "src/egh450_target_solvepnp"]
+	path = src/egh450_target_solvepnp
+	url = git@github.com:annajforster/egh450_target_solvepnp.git
+[submodule "src/raspberrypi-get-ip"]
+	path = src/raspberrypi-get-ip
+	url = git@github.com:annajforster/raspberrypi-get-ip.git
