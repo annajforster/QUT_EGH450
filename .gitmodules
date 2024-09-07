@@ -13,6 +13,3 @@
 [submodule "src/raspberrypi-get-ip"]
 	path = src/raspberrypi-get-ip
 	url = git@github.com:annajforster/raspberrypi-get-ip.git
-[submodule "src/--force"]
-	path = src/--force
-	url = git@github.com:annajforster/depthai_publisher.git

@@ -7,7 +7,6 @@
 subdirs("gtest")
 subdirs("egh450_target_solvepnp")
 subdirs("breadcrumb")
-subdirs("depthai_publisher_updated")
 subdirs("qutas_lab_450")
 subdirs("spar/spar_msgs")
 subdirs("spar/spar_node")

@@ -1,0 +1,57 @@
+#!/usr/bin/env python3
+# Used to manually publish a target or marker detection
+import rospy
+from vision_msgs.msg import ObjectHypothesisWithPose
+from geometry_msgs.msg import Pose, Point, Quaternion
+from std_msgs.msg import UInt8
+from geometry_msgs.msg import TransformStamped
+
+def fake_publisher():
+    # Initialize the ROS node
+    rospy.init_node('fake_publisher', anonymous=True)
+    
+    # Create a publisher for the /target_detection/roi topic
+    #pub = rospy.Publisher('/camera/pose', ObjectHypothesisWithPose, queue_size=10)
+    
+    pub = rospy.Publisher('/camera/pose', TransformStamped, queue_size=10)
+    
+    #pub = rospy.Publisher('payloadcommands', UInt8, queue_size=1)
+    
+    # Set the publish rate (Hz)
+    rate = rospy.Rate(1)  # 1 Hz
+
+    while not rospy.is_shutdown():
+        
+        #payload = UInt8()
+        #payload.data = 1
+        
+        # Create a fake ObjectHypothesisWithPose message
+        #msg = ObjectHypothesisWithPose()
+        #msg.id = 1
+        #msg.pose.pose.position = Point(x=0.0, y=2.0, z=0.0)
+        #msg.pose.pose.orientation = Quaternion(x=0.0, y=0.0, z=0.0, w=1.0)
+        
+        camera = TransformStamped()
+        camera.child_frame_id = "20"
+        camera.transform.translation.x = 1.0
+        camera.transform.translation.y = 2.0
+        camera.transform.translation.z = 3.0
+        
+        # Log and publish the message
+        #rospy.loginfo("Publishing fake ObjectHypothesisWithPose message: %s", msg)
+        #pub.publish(msg)
+
+        #rospy.loginfo("Publishing fake payload message")
+        #pub.publish(payload)
+        
+        rospy.loginfo("Publishing fake camera pose message")
+        pub.publish(camera)
+        
+        # Sleep to maintain the loop rate
+        rate.sleep()
+
+if __name__ == '__main__':
+    try:
+        fake_publisher()
+    except rospy.ROSInterruptException:
+        pass

@@ -1,0 +1,174 @@
+#!/usr/bin/env python3
+
+import rospy
+from vision_msgs.msg import ObjectHypothesisWithPose
+from visualization_msgs.msg import Marker   
+
+def person_vis(data):
+    location = data.pose.pose
+
+    # # Message header variables 
+    msg_out = Marker()
+    msg_out.header.frame_id = "map"
+    msg_out.header.stamp = rospy.Time.now() 
+
+    # Marker variables
+    msg_out.ns = "Person"               # Namespace 
+    msg_out.id = 0                      # ID of the marker
+    msg_out.type = Marker.CYLINDER      # Shape choice 
+    msg_out.action = Marker.ADD         # Action is to add / create a new marker
+    msg_out.lifetime = rospy.Time(0)    # Lifetime set to Time(0) will make it last forever
+    msg_out.frame_locked = True         # Locking frame in place in RVIZ
+
+	
+    # Marker Global coordinates 
+    msg_out.pose.position.x = location.position.x
+    msg_out.pose.position.y = location.position.y
+    msg_out.pose.position.z = 0.0
+    msg_out.pose.orientation.w = 1.0
+    msg_out.pose.orientation.x = 0.0
+    msg_out.pose.orientation.y = 0.0
+    msg_out.pose.orientation.z = 0.0
+
+    # Setting scale of marker (m)
+    msg_out.scale.x = 0.2
+    msg_out.scale.y = 0.2
+    msg_out.scale.z = 0.5
+
+    # Make the cylinder a blue colour
+    msg_out.color.r = (0/255)
+    msg_out.color.g = (0/255)
+    msg_out.color.b = (255/255)
+    msg_out.color.a = 1.0
+
+    # Publishing the marker to RVIZ 
+    rospy.loginfo('Publishing Person Marker')
+    marker_pub.publish(msg_out)
+
+    rospy.loginfo("[x: %0.2f; y: %0.2f]" % (location.position.x,
+                    location.position.y))
+
+
+
+def backpack_vis (data):
+    location = data.pose.pose
+
+    # # Message header variables 
+    msg_out = Marker()
+    msg_out.header.frame_id = "map"
+    msg_out.header.stamp = rospy.Time.now() 
+
+    # Marker variables
+    msg_out.ns = "Backpack"             # Namespace 
+    msg_out.id = 0                      # ID of the marker
+    msg_out.type = Marker.SPHERE      # Shape choice 
+    msg_out.action = Marker.ADD         # Action is to add / create a new marker
+    msg_out.lifetime = rospy.Time(0)    # Lifetime set to Time(0) will make it last forever
+    msg_out.frame_locked = True         # Locking frame in place in RVIZ
+
+	
+    # Marker Global coordinates 
+    msg_out.pose.position.x = location.position.x
+    msg_out.pose.position.y = location.position.y
+    msg_out.pose.position.z = 0.0
+    msg_out.pose.orientation.w = 1.0
+    msg_out.pose.orientation.x = 0.0
+    msg_out.pose.orientation.y = 0.0
+    msg_out.pose.orientation.z = 0.0
+
+    # Setting scale of marker (m)
+    msg_out.scale.x = 0.2
+    msg_out.scale.y = 0.4
+    msg_out.scale.z = 0.2
+
+    # Make the cube a black colour
+    msg_out.color.r = (0/255)
+    msg_out.color.g = (0/255)
+    msg_out.color.b = (0/255)
+    msg_out.color.a = 1.0
+
+    # Publishing the marker to RVIZ 
+    rospy.loginfo('Publishing Backpack Marker')
+    marker_pub.publish(msg_out)
+
+    rospy.loginfo("[x: %0.2f; y: %0.2f]" % (location.position.x,
+                    location.position.y))
+
+
+def marker_vis (data):
+    location = data.pose.pose
+
+    # # Message header variables 
+    msg_out = Marker()
+    msg_out.header.frame_id = "map"
+    msg_out.header.stamp = rospy.Time.now() 
+
+    # Marker variables
+    msg_out.ns = "ArUco"               # Namespace 
+    msg_out.id = 0                      # ID of the marker
+    msg_out.type = Marker.CUBE          # Shape choice 
+    msg_out.action = Marker.ADD         # Action is to add / create a new marker
+    msg_out.lifetime = rospy.Time(0)    # Lifetime set to Time(0) will make it last forever
+    msg_out.frame_locked = True         # Locking frame in place in RVIZ
+
+	
+    # Marker Global coordinates 
+    msg_out.pose.position.x = location.position.x
+    msg_out.pose.position.y = location.position.y
+    msg_out.pose.position.z = 0.0
+    msg_out.pose.orientation.w = 1.0
+    msg_out.pose.orientation.x = 0.0
+    msg_out.pose.orientation.y = 0.0
+    msg_out.pose.orientation.z = 0.0
+
+    # Setting scale of marker (m)
+    msg_out.scale.x = 0.2
+    msg_out.scale.y = 0.2
+    msg_out.scale.z = 0.1
+
+    # Make the square a white colour
+    msg_out.color.r = (255/255)
+    msg_out.color.g = (255/255)
+    msg_out.color.b = (255/255)
+    msg_out.color.a = 1.0
+
+    # Publishing the marker to RVIZ 
+    rospy.loginfo('Publishing ArUco Marker')
+    marker_pub.publish(msg_out)
+
+    rospy.loginfo("[x: %0.2f; y: %0.2f]" % (location.position.x,
+                    location.position.y))
+
+
+def callback_marker(data1):
+    id = data1.id 
+    data = data1
+
+    if 0 <= id <= 100:
+        marker_vis(data)
+    elif id == 101:
+        person_vis(data1)
+    elif id == 102:
+        backpack_vis(data)
+    else:
+        rospy.loginfo('Invaild Marker ID: %d', id)
+
+
+if __name__ == '__main__':
+    rospy.init_node('rviz_vis_node', anonymous=True)
+    # Subscriber for tf2_combined 
+    sub_roi = rospy.Subscriber("target_detection/roi", ObjectHypothesisWithPose, callback_marker)
+
+    # Publisher for sending marker info to RVIZ 
+    marker_pub = rospy.Publisher('visualization_marker', Marker, queue_size=3, latch=True)
+    
+    # Printing to terminal that marker info has been sent to RVIZ
+    rospy.loginfo('Published Marker Info')
+
+    # Endless loop 
+    rate = rospy.Rate(10)  # 10 Hz
+    rospy.spin()
+
+    while not rospy.is_shutdown():
+        #callback_marker()
+        rate.sleep()

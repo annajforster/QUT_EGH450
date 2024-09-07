@@ -15,7 +15,10 @@ servo = AngularServo(servo_pin, min_angle=0, max_angle=180) #GPIO 12
 #after the unit testing, the duty cycle of the DF9GMS is between 2 and 12
 # therefor, 2 is 0 degrees. 12 is 180 degrees of the duty cycle
 #
+
+
 def start_position():
+    rospy.loginfo("Awaiting message...")
     servo.angle = 90
     time.sleep(2)
 #
@@ -44,18 +47,20 @@ def test_code():
     drop_right()
 #
 #
+start_position()
 def callback(msg):
+    rospy.loginfo("Message received")
     #Payload command key
     #Original position: 0b00000000 (0)
     #Drop Epi pen:      0b00000001 (1)
     #Drop Tracker:      0b00000010 (2)
     #Drop Cube:         0b00000011 (3)
     #Drop Rectangle:    0b00000100 (4)
-    if msg.data == 0:
-        start_position()
-        rospy.sleep(rospy.Duration(3))
+    # if msg.data == 0:
+        #start_position()
+       # rospy.sleep(rospy.Duration(3))
 #
-    elif msg.data == 1:
+    if msg.data == 1:
         drop_right()
         rospy.sleep(rospy.Duration(3))
         rospy.loginfo("Epi-Pen was deployed")
@@ -74,13 +79,19 @@ def callback(msg):
         drop_left()
         rospy.sleep(rospy.Duration(3))
         rospy.loginfo("Rectangle was deployed")
+        
+    else:
+        start_position()
 #
 def main():
     # Initialize ROS node
     rospy.init_node('servo_controller_node')
+    rospy.loginfo("Payload Setup")
     #
     # Subscribe to payloadcommands topic
+    
     rospy.Subscriber('payloadcommands', UInt8, callback)
+    rospy.loginfo("Message acted on")
     #
     # Keep the node alive
     rospy.spin()

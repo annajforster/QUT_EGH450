@@ -56,7 +56,6 @@ CMAKE_BINARY_DIR = /home/uavteam2/QUT_EGH450/build
 all: gtest/all
 all: egh450_target_solvepnp/all
 all: breadcrumb/all
-all: depthai_publisher_updated/all
 all: qutas_lab_450/all
 all: spar/spar_msgs/all
 all: spar/spar_node/all
@@ -67,7 +66,6 @@ all: spar/spar_node/all
 preinstall: gtest/preinstall
 preinstall: egh450_target_solvepnp/preinstall
 preinstall: breadcrumb/preinstall
-preinstall: depthai_publisher_updated/preinstall
 preinstall: qutas_lab_450/preinstall
 preinstall: spar/spar_msgs/preinstall
 preinstall: spar/spar_node/preinstall
@@ -83,7 +81,6 @@ clean: CMakeFiles/download_extra_data.dir/clean
 clean: gtest/clean
 clean: egh450_target_solvepnp/clean
 clean: breadcrumb/clean
-clean: depthai_publisher_updated/clean
 clean: qutas_lab_450/clean
 clean: spar/spar_msgs/clean
 clean: spar/spar_node/clean
@@ -137,24 +134,6 @@ breadcrumb/clean: breadcrumb/CMakeFiles/breadcrumb_node.dir/clean
 breadcrumb/clean: breadcrumb/CMakeFiles/dynamic_reconfigure_generate_messages_cpp.dir/clean
 
 .PHONY : breadcrumb/clean
-
-#=============================================================================
-# Directory level rules for directory depthai_publisher_updated
-
-# Recursive "all" directory target.
-depthai_publisher_updated/all:
-
-.PHONY : depthai_publisher_updated/all
-
-# Recursive "preinstall" directory target.
-depthai_publisher_updated/preinstall:
-
-.PHONY : depthai_publisher_updated/preinstall
-
-# Recursive "clean" directory target.
-depthai_publisher_updated/clean:
-
-.PHONY : depthai_publisher_updated/clean
 
 #=============================================================================
 # Directory level rules for directory egh450_target_solvepnp
