@@ -1,0 +1,96 @@
+#!/usr/bin/env python
+
+import math
+
+import rospy
+import tf2_ros
+from std_msgs.msg import Time
+from geometry_msgs.msg import TransformStamped
+from vision_msgs.msg import ObjectHypothesisWithPose
+
+# Global Variables
+tfbr = None
+pub_found = None
+
+camera_name = "camera"
+target_name = "target"
+
+def send_tf_target(pose):
+	# Generate our "found" timestamp
+	time_found = rospy.Time.now()
+
+	# Create a transform arbitrarily in the
+	# camera frame
+	t = TransformStamped()
+	t.header.stamp = time_found
+	t.header.frame_id = camera_name
+	t.child_frame_id = target_name
+
+    # Once we know where the target is, relative to the camera frame, we create and sent that transform (relative position target to camera)
+	t.transform.translation.x = pose.position.x
+	t.transform.translation.y = pose.position.y
+	t.transform.translation.z = pose.position.z
+	t.transform.rotation.x = 0.0
+	t.transform.rotation.y = 0.0
+	t.transform.rotation.z = 0.0
+	t.transform.rotation.w = 0.0
+
+	# Send the transformation to TF
+	# and "found" timestamp to localiser
+	tfbr.sendTransform(t)
+	pub_found.publish(time_found)
+
+
+	return t
+
+
+def camera_callback(data):
+
+	# Extracting pose data from message  
+	pose_local = data.pose.pose
+
+	# Calling the transform function and passing through pose data
+	target_tf = send_tf_target(pose_local)
+
+	detection = ObjectHypothesisWithPose()
+	detection = data
+	detection.pose.pose.position.x = target_tf.transform.translation.x
+	detection.pose.pose.position.y = target_tf.transform.translation.y
+	detection.pose.pose.position.z = target_tf.transform.translation.z
+	rospy.loginfo("[x: %0.2f; y: %0.2f; z: %0.2f]" % (target_tf.transform.translation.x,
+                            target_tf.transform.translation.y,
+                            target_tf.transform.translation.z))
+
+	rospy.loginfo("Sending ROI to target found coordinates...")
+
+	pub_detection.publish(detection)
+	rospy.loginfo("ROI coordinates sent.")
+
+
+
+
+
+if __name__ == '__main__':
+	rospy.init_node('tf2_broadcaster_target')
+	rospy.loginfo("tf2_broadcaster_target sending target found...")
+
+	# Setup tf2 broadcaster and timestamp publisher
+	tfbr = tf2_ros.TransformBroadcaster()
+	pub_found = rospy.Publisher('/emulated_uav/target_found', Time, queue_size=10)
+	pub_detection = rospy.Publisher('/target_detection/roi', ObjectHypothesisWithPose, queue_size=2)
+
+	camera_pose = rospy.Subscriber('/camera/pose', ObjectHypothesisWithPose, camera_callback, queue_size=2)
+
+	# Give the nodes a few seconds to configure
+	rospy.sleep(rospy.Duration(2))
+
+	# Send out our target messages
+	# send_tf_target()
+
+	# Keeps the script always on to always be ready to receive data 
+	rospy.spin()
+
+	# Give the nodes a few seconds to transmit data
+	# then we can exit
+	rospy.sleep(rospy.Duration(2))
+	rospy.loginfo("tf2_broadcaster_target sent TF and timestamp")

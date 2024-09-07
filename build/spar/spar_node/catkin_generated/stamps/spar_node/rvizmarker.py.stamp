@@ -1,0 +1,75 @@
+#!/usr/bin/env python3
+
+import rospy
+from geometry_msgs.msg import PoseStamped
+from visualization_msgs.msg import Marker
+from std_msgs.msg import String
+
+# Global variables
+target_location = None
+target_type = None
+
+def target_location_callback(data):
+    global target_location
+    target_location = data
+
+def target_type_callback(data):
+    global target_type
+    target_type = data.data
+
+def publish_target_marker():
+    if target_location is not None:
+        # Create a Marker message
+        marker = Marker()
+        marker.header.frame_id = "world"  # Assuming the target location is in the world frame
+        marker.header.stamp = rospy.Time.now()
+        marker.ns = "target_marker"
+        marker.id = 0
+        marker.type = Marker.SPHERE
+        marker.action = Marker.ADD
+        
+        # Set the pose of the marker. This is a full pose message, so we need to fill in orientation
+        marker.pose = target_location.pose
+        
+        # Scale the marker
+        marker.scale.x = 0.1
+        marker.scale.y = 0.1
+        marker.scale.z = 0.1
+        
+        # Set color
+        #if target_type == "obstacle":
+        #    marker.color.a = 1.0
+        #    marker.color.r = 1.0
+        #    marker.color.g = 0.0
+        #    marker.color.b = 0.0
+        if target_type == "waypoint":
+            marker.color.a = 1.0
+            marker.color.r = 0.0
+            marker.color.g = 1.0
+            marker.color.b = 0.0
+        else:
+            marker.color.a = 1.0
+            marker.color.r = 0.0
+            marker.color.g = 0.0
+            marker.color.b = 1.0
+        
+        # Lifetime of the marker (0 means permanent)
+        marker.lifetime = rospy.Duration(0)
+        
+        # Publish the marker
+        marker_pub.publish(marker)
+
+if __name__ == '__main__':
+    rospy.init_node('target_visualizer', anonymous=True)
+    
+    # Publisher for RViz marker
+    marker_pub = rospy.Publisher('visualization_marker', Marker, queue_size=2)
+    
+    # Subscribers
+    rospy.Subscriber('/target_location_world', PoseStamped, target_location_callback)
+    rospy.Subscriber('/target_type', String, target_type_callback)
+    
+    rate = rospy.Rate(10)  # 10 Hz
+    while not rospy.is_shutdown():
+        publish_target_marker()
+        rate.sleep()

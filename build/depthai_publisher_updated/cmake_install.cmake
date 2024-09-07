@@ -73,6 +73,10 @@ if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/depthai_publisher_updated" TYPE PROGRAM FILES "/home/uavteam2/QUT_EGH450/build/depthai_publisher_updated/catkin_generated/installspace/aruco_subscriber_voice2")
+endif()
+
+if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
   file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/depthai_publisher_updated" TYPE PROGRAM FILES "/home/uavteam2/QUT_EGH450/build/depthai_publisher_updated/catkin_generated/installspace/dai_publisher_yolov5_runner_2")
 endif()
 
