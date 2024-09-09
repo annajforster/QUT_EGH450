@@ -116,6 +116,13 @@
 /home/uavteam2/QUT_EGH450/build/breadcrumb/CMakeFiles/breadcrumb_node.dir
 /home/uavteam2/QUT_EGH450/build/breadcrumb/CMakeFiles/dynamic_reconfigure_generate_messages_cpp.dir
 /home/uavteam2/QUT_EGH450/build/breadcrumb/CMakeFiles/edit_cache.dir
+/home/uavteam2/QUT_EGH450/build/depthai_publisher_updated/CMakeFiles/install/strip.dir
+/home/uavteam2/QUT_EGH450/build/depthai_publisher_updated/CMakeFiles/install/local.dir
+/home/uavteam2/QUT_EGH450/build/depthai_publisher_updated/CMakeFiles/install.dir
+/home/uavteam2/QUT_EGH450/build/depthai_publisher_updated/CMakeFiles/list_install_components.dir
+/home/uavteam2/QUT_EGH450/build/depthai_publisher_updated/CMakeFiles/rebuild_cache.dir
+/home/uavteam2/QUT_EGH450/build/depthai_publisher_updated/CMakeFiles/edit_cache.dir
+/home/uavteam2/QUT_EGH450/build/depthai_publisher_updated/CMakeFiles/test.dir
 /home/uavteam2/QUT_EGH450/build/qutas_lab_450/CMakeFiles/install/local.dir
 /home/uavteam2/QUT_EGH450/build/qutas_lab_450/CMakeFiles/geographic_msgs_generate_messages_nodejs.dir
 /home/uavteam2/QUT_EGH450/build/qutas_lab_450/CMakeFiles/geographic_msgs_generate_messages_lisp.dir

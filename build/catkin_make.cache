@@ -1,2 +1,2 @@
-breadcrumb:egh450_target_solvepnp:qutas_lab_450:spar/spar_msgs:spar/spar_node
+breadcrumb:depthai_publisher_updated:egh450_target_solvepnp:qutas_lab_450:spar/spar_msgs:spar/spar_node
 -DCATKIN_DEVEL_PREFIX=/home/uavteam2/QUT_EGH450/devel -DCMAKE_INSTALL_PREFIX=/home/uavteam2/QUT_EGH450/install -G Unix Makefiles
