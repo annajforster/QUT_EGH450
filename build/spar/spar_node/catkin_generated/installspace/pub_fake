@@ -5,17 +5,20 @@ from vision_msgs.msg import ObjectHypothesisWithPose
 from geometry_msgs.msg import Pose, Point, Quaternion
 from std_msgs.msg import UInt8
 from geometry_msgs.msg import TransformStamped
+from sensor_msgs.msg import BatteryState
 
 def fake_publisher():
     # Initialize the ROS node
     rospy.init_node('fake_publisher', anonymous=True)
     
     # Create a publisher for the /target_detection/roi topic
-    #pub = rospy.Publisher('/camera/pose', ObjectHypothesisWithPose, queue_size=10)
+    #pub = rospy.Publisher('target_detection/roi', ObjectHypothesisWithPose, queue_size=10)
     
-    pub = rospy.Publisher('/camera/pose', TransformStamped, queue_size=10)
+    #pub = rospy.Publisher('/camera/pose', TransformStamped, queue_size=10)
     
     #pub = rospy.Publisher('payloadcommands', UInt8, queue_size=1)
+    
+    pub = rospy.Publisher('/mavros/battery', BatteryState, queue_size=10)
     
     # Set the publish rate (Hz)
     rate = rospy.Rate(1)  # 1 Hz
@@ -27,15 +30,15 @@ def fake_publisher():
         
         # Create a fake ObjectHypothesisWithPose message
         #msg = ObjectHypothesisWithPose()
-        #msg.id = 1
+        #msg.id = 105
         #msg.pose.pose.position = Point(x=0.0, y=2.0, z=0.0)
         #msg.pose.pose.orientation = Quaternion(x=0.0, y=0.0, z=0.0, w=1.0)
         
-        camera = TransformStamped()
-        camera.child_frame_id = "20"
-        camera.transform.translation.x = 1.0
-        camera.transform.translation.y = 2.0
-        camera.transform.translation.z = 3.0
+        #camera = TransformStamped()
+        #camera.child_frame_id = "20"
+        #camera.transform.translation.x = 1.0
+        #camera.transform.translation.y = 2.0
+        #camera.transform.translation.z = 3.0
         
         # Log and publish the message
         #rospy.loginfo("Publishing fake ObjectHypothesisWithPose message: %s", msg)
@@ -44,8 +47,15 @@ def fake_publisher():
         #rospy.loginfo("Publishing fake payload message")
         #pub.publish(payload)
         
-        rospy.loginfo("Publishing fake camera pose message")
-        pub.publish(camera)
+        #rospy.loginfo("Publishing fake camera pose message")
+        #pub.publish(camera)
+        
+        battery_msg = BatteryState()
+
+        battery_msg.percentage = 0.19
+
+        rospy.loginfo("Publishing battery percentage: %f", battery_msg.percentage)
+        pub.publish(battery_msg)
         
         # Sleep to maintain the loop rate
         rate.sleep()
