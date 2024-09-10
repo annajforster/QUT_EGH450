@@ -53,25 +53,24 @@ def callback(msg):
     rospy.loginfo("Message received")
     #Payload command key
     #Original position: 0b00000000 (0)
-    #Drop Epi pen:      0b00000001 (1)
-    #Drop Tracker:      0b00000010 (2)
-    #Drop Cube:         0b00000011 (3)
-    #Drop Rectangle:    0b00000100 (4)
+    #Drop Cube:         0b00000001 (1)
+    #Drop rectangle:    0b00000010 (2)
+
     # if msg.data == 0:
         #start_position()
        # rospy.sleep(rospy.Duration(3))
 #
     if msg.data == 1:
-        servo.angle = 20
+        servo.angle = 45
         rospy.sleep(rospy.Duration(3))
         servo.angle = 90
-        rospy.loginfo("Epi-Pen was deployed")
+        rospy.loginfo("Cube was deployed")
 #    
     elif msg.data == 2:
-        servo.angle = 160
+        servo.angle = 135
         rospy.sleep(rospy.Duration(3))
         servo.angle = 90
-        rospy.loginfo("Tracker was deployed")
+        rospy.loginfo("Rectangle deployed")
     else:
         servo.angle = 90
 #

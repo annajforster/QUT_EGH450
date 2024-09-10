@@ -62,13 +62,13 @@ def callback(msg):
        # rospy.sleep(rospy.Duration(3))
 #
     if msg.data == 1:
-        servo.angle = 20
+        servo.angle = 45
         rospy.sleep(rospy.Duration(3))
         servo.angle = 90
         rospy.loginfo("Epi-Pen was deployed")
 #    
     elif msg.data == 2:
-        servo.angle = 160
+        servo.angle = 135
         rospy.sleep(rospy.Duration(3))
         servo.angle = 90
         rospy.loginfo("Tracker was deployed")

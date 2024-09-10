@@ -118,11 +118,11 @@ if __name__ == '__main__':
 
 	# Step 1: Subscriber for solve_pnp camera pose estimate 
 	#camera_pose = rospy.Subscriber('/camera/pose', ObjectHypothesisWithPose, camera_callback, queue_size=2)
-	camera_pose = rospy.Subscriber('/camera/pose', TransformStamped, camera_callback, queue_size=2)
+	camera_pose = rospy.Subscriber('/camera/pose', TransformStamped, camera_callback, queue_size=10)
 	rospy.loginfo("Camera Pose received")
 
 	# Publisher for ROI to demo_wp_roi
-	pub_detection = rospy.Publisher('/target_detection/roi', ObjectHypothesisWithPose, queue_size=2)
+	pub_detection = rospy.Publisher('/target_detection/roi', ObjectHypothesisWithPose, queue_size=10)
 	rospy.loginfo("Camera Pose passed to Waypoint Scripts")
 
 

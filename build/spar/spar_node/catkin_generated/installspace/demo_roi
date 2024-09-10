@@ -37,8 +37,8 @@ class Guidance():
 		# Make sure we have a valid waypoint list
 		# Safe boundary values, default to X<2,Y<2,Z<2.
 		self.safeRangeX = rospy.get_param("~safeRangeX", 4)
-		self.safeRangeY = rospy.get_param("~safeRangeY", 2.5)
-		self.safeRangeZ = rospy.get_param("~safeRangeZ", 4.5) 
+		self.safeRangeY = rospy.get_param("~safeRangeY", 2)
+		self.safeRangeZ = rospy.get_param("~safeRangeZ", 4) 
 		print("Survey Alt: ",self.surveyAltitude)
 		if not self.check_waypoints(waypoints):
 			raise ArgumentError("Invalid waypoint list input!")
@@ -46,7 +46,7 @@ class Guidance():
 		# Internal counter to see what waypoint were are up to
 		self.nextWaypointIndex = 0
 		self.waypoint_counter = 0
-		#self.payload_id = 1
+		
 
 		#Aruco storage and landing logic
 		#This will be checked to see if the drone has landed, before attempting a land and finishing the mission
@@ -92,13 +92,14 @@ class Guidance():
 		# Make some space to record down our current location
 		self.current_location = Point()
 		# Set our linear and rotational velocities for the flight
-		self.vel_linear = rospy.get_param("~vel_linear", 0.8)
-		#self.vel_yaw = rospy.get_param("~vel_yaw", 0.8)
+		self.vel_linear = rospy.get_param("~vel_linear", 0.2)
+		
+		#self.vel_yaw = rospy.get_param("~vel_yaw", 0.2)
 		# Set our position and yaw waypoint accuracies
-		self.accuracy_pos = rospy.get_param("~acc_pos", 0.15)
-		self.accuracy_yaw = rospy.get_param("~acc_yaw", 0.15)
+		self.accuracy_pos = rospy.get_param("~acc_pos", 0.3)
+		self.accuracy_yaw = rospy.get_param("~acc_yaw", 1.0)
 		# Get survey altitude
-		self.surveyAltitude = rospy.get_param("~surveyAlt", 1)
+		self.surveyAltitude = rospy.get_param("~surveyAlt", 1.0)
 
 		# Create our action client
 		action_ns = rospy.get_param("~action_topic", 'spar/flight')
@@ -137,7 +138,7 @@ class Guidance():
 			# XXX: These topics could be hard-coded to avoid using a launch file
 			self.sub_pose = rospy.Subscriber("~pose", PoseStamped, self.callback_pose)
 			# Subscriber to catch "ROI" diversion commands
-			self.sub_roi = rospy.Subscriber("target_detection/roi", ObjectHypothesisWithPose, self.callback_detection)
+			self.sub_roi = rospy.Subscriber("/target_detection/roi", ObjectHypothesisWithPose, self.callback_detection)
 			# Subscriber to battery topic for future safety landing automation 
 			self.sub_battery = rospy.Subscriber("/mavros/battery", BatteryState, self.callback_battery)
 
@@ -508,6 +509,8 @@ class Guidance():
 					# Else the mission is over, shutdown and quit the node
 					# XXX:	This could be used to restart the mission back to the
 					#		first waypoint instead to restart the mission
+					rospy.loginfo("Aruco Marker locations")
+					print(self.markers)
 					rospy.loginfo("Mission complete!")
 					rospy.signal_shutdown("complete")
 			elif (self.spar_client.get_state() == GoalStatus.PREEMPTED) or (self.spar_client.get_state() == GoalStatus.ABORTED) or (self.spar_client.get_state() == GoalStatus.REJECTED):
@@ -567,7 +570,7 @@ class Guidance():
 def main(args):
 	# Initialise ROS
 	rospy.init_node('guidance')
-	surveyAltitude = rospy.get_param("~surveyAlt", 1)
+	surveyAltitude = rospy.get_param("~surveyAlt", 3)
 	# List of waypoints
 	#surveyAltitude = 1.8
 	# [X, Y, Z, Yaw]
@@ -602,21 +605,7 @@ def main(args):
              [ 3.0,-2.0, surveyAltitude, 0.0],    # 7  r4
              [ 3.0, 2.0, surveyAltitude, 0.0]]    # 8  r4
     
-	# wpsR1 = [[ 0.0, 0.0, surveyAltitude, 0.0],
-	# 	   [ 1.0, 1.0, surveyAltitude, 0.0],
-	# 	   [-1.0, 1.0, surveyAltitude, 0.0],
-	# 	   [-1.0,-1.0, surveyAltitude, 0.0],
-	# 	   [ 1.0,-1.0, surveyAltitude, 0.0],
-	# 	   [ -1.8, -1.8, surveyAltitude, 0.0]]
-
-	# wpsR2 = [[ 0.0, 0.0, surveyAltitude*2, 0.0],
-	# 	   [ 1.0, 1.0, surveyAltitude*2, 0.0],
-	# 	   [-1.0, 1.0, surveyAltitude*2, 0.0],
-	# 	   [-1.0,-1.0, surveyAltitude*2, 0.0],
-	# 	   [ 1.3,-1.0, surveyAltitude*2, 0.0],
-	# 	   [ 1.3,1.0, surveyAltitude*2, 0.0],
-	# 	   [ 1.0,-1.0, surveyAltitude*2, 0.0],
-	# 	   [ 0.0, 0.0, surveyAltitude*2, 0.0]]
+	
 
 	if surveyAltitude < 2.9:
 		wps = wpsR1
