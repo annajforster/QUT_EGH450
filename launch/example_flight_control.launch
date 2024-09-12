@@ -1,6 +1,6 @@
 <?xml version='1.0'?>
 <launch>
-	<arg name="uav_name" default="uav" />
+	<arg name="uav_name" default="uavteam2" />
 
 	<!-- Mavel Node -->
 	<node pkg="mavel" type="mavel_node" name="mavel" clear_params="true" output="screen">

@@ -1,6 +1,6 @@
 <?xml version='1.0'?>
 <launch>
-	<node pkg="egh450_target_solvepnp" type="pe_objects" name="pe_objects" clear_params="true" output="screen">
+	<node pkg="egh450_target_solvepnp2" type="pe_objects" name="pe_objects" clear_params="true" output="screen">
 		<!-- Radius of the circle target in meters -->
 
 		<!-- Setting this to true will tell the program to use "~image_raw" + "/compressed" instead -->

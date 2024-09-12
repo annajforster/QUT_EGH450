@@ -570,7 +570,8 @@ class Guidance():
 def main(args):
 	# Initialise ROS
 	rospy.init_node('guidance')
-	surveyAltitude = rospy.get_param("~surveyAlt", 3)
+	#surveyAltitude = rospy.get_param("~surveyAlt", 1.5)
+	surveyAltitude = 1.5
 	# List of waypoints
 	#surveyAltitude = 1.8
 	# [X, Y, Z, Yaw]
