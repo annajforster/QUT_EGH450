@@ -53,15 +53,27 @@ if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/spar_node" TYPE PROGRAM FILES "/home/uavteam2/QUT_EGH450/build/spar/spar_node/catkin_generated/installspace/demo_breadcrumb")
+endif()
+
+if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/spar_node" TYPE PROGRAM FILES "/home/uavteam2/QUT_EGH450/build/spar/spar_node/catkin_generated/installspace/demo_roi")
+endif()
+
+if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/spar_node" TYPE PROGRAM FILES "/home/uavteam2/QUT_EGH450/build/spar/spar_node/catkin_generated/installspace/demo_roi_only")
+endif()
+
+if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
   file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/spar_node" TYPE PROGRAM FILES "/home/uavteam2/QUT_EGH450/build/spar/spar_node/catkin_generated/installspace/demo_wp")
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/spar_node" TYPE PROGRAM FILES "/home/uavteam2/QUT_EGH450/build/spar/spar_node/catkin_generated/installspace/goto")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/spar_node" TYPE PROGRAM FILES "/home/uavteam2/QUT_EGH450/build/spar/spar_node/catkin_generated/installspace/demo_wp_roi")
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/spar_node" TYPE PROGRAM FILES "/home/uavteam2/QUT_EGH450/build/spar/spar_node/catkin_generated/installspace/takeoff")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/spar_node" TYPE PROGRAM FILES "/home/uavteam2/QUT_EGH450/build/spar/spar_node/catkin_generated/installspace/goto")
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
@@ -77,31 +89,15 @@ if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/spar_node" TYPE PROGRAM FILES "/home/uavteam2/QUT_EGH450/build/spar/spar_node/catkin_generated/installspace/roi_v2")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/spar_node" TYPE PROGRAM FILES "/home/uavteam2/QUT_EGH450/build/spar/spar_node/catkin_generated/installspace/pub_fake")
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/spar_node" TYPE PROGRAM FILES "/home/uavteam2/QUT_EGH450/build/spar/spar_node/catkin_generated/installspace/tf2_broadcaster_frames.py")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/spar_node" TYPE PROGRAM FILES "/home/uavteam2/QUT_EGH450/build/spar/spar_node/catkin_generated/installspace/takeoff")
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/spar_node" TYPE PROGRAM FILES "/home/uavteam2/QUT_EGH450/build/spar/spar_node/catkin_generated/installspace/tf2_broadcaster_target.py")
-endif()
-
-if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/spar_node" TYPE PROGRAM FILES "/home/uavteam2/QUT_EGH450/build/spar/spar_node/catkin_generated/installspace/wp_sw")
-endif()
-
-if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/spar_node" TYPE PROGRAM FILES "/home/uavteam2/QUT_EGH450/build/spar/spar_node/catkin_generated/installspace/tf2_listener")
-endif()
-
-if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/spar_node" TYPE PROGRAM FILES "/home/uavteam2/QUT_EGH450/build/spar/spar_node/catkin_generated/installspace/demo_roi")
-endif()
-
-if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/spar_node" TYPE PROGRAM FILES "/home/uavteam2/QUT_EGH450/build/spar/spar_node/catkin_generated/installspace/rviz_vis")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/spar_node" TYPE PROGRAM FILES "/home/uavteam2/QUT_EGH450/build/spar/spar_node/catkin_generated/installspace/takeoff_and_land")
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
@@ -109,11 +105,15 @@ if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/spar_node" TYPE PROGRAM FILES "/home/uavteam2/QUT_EGH450/build/spar/spar_node/catkin_generated/installspace/tf2_combined_v3")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/spar_node" TYPE PROGRAM FILES "/home/uavteam2/QUT_EGH450/build/spar/spar_node/catkin_generated/installspace/tf2_frames")
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/spar_node" TYPE PROGRAM FILES "/home/uavteam2/QUT_EGH450/build/spar/spar_node/catkin_generated/installspace/pub_fake")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/spar_node" TYPE PROGRAM FILES "/home/uavteam2/QUT_EGH450/build/spar/spar_node/catkin_generated/installspace/wp_roi_landing")
+endif()
+
+if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/spar_node" TYPE PROGRAM FILES "/home/uavteam2/QUT_EGH450/build/spar/spar_node/catkin_generated/installspace/tf2_combined_espeak")
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)

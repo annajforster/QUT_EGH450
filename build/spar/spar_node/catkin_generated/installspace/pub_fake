@@ -12,9 +12,9 @@ def fake_publisher():
     rospy.init_node('fake_publisher', anonymous=True)
     
     # Create a publisher for the /target_detection/roi topic
-    pub = rospy.Publisher('target_detection/roi', ObjectHypothesisWithPose, queue_size=10)
+    #pub = rospy.Publisher('target_detection/roi', ObjectHypothesisWithPose, queue_size=10)
     
-    #pub = rospy.Publisher('/camera/pose', TransformStamped, queue_size=10)
+    pub = rospy.Publisher('/camera/pose', TransformStamped, queue_size=10)
     
     #pub = rospy.Publisher('payloadcommands', UInt8, queue_size=1)
     
@@ -30,17 +30,17 @@ def fake_publisher():
         #msg.data = 1
         
         # DEMO_ROI
-        msg = ObjectHypothesisWithPose()
-        msg.id = 101
-        msg.pose.pose.position = Point(x=1.0, y=0.0, z=2.0)
-        msg.pose.pose.orientation = Quaternion(x=0.0, y=0.0, z=0.0, w=1.0)
+        #msg = ObjectHypothesisWithPose()
+        #msg.id = 101
+        #msg.pose.pose.position = Point(x=1.0, y=0.0, z=2.0)
+        #msg.pose.pose.orientation = Quaternion(x=0.0, y=0.0, z=0.0, w=1.0)
         
         # CAMERA POSE ESTIMATE
-        #msg = TransformStamped()
-        #msg.child_frame_id = "101"
-        #msg.transform.translation.x = 1.5
-        #msg.transform.translation.y = 0.5
-        #msg.transform.translation.z = 1.5
+        msg = TransformStamped()
+        msg.child_frame_id = "102"
+        msg.transform.translation.x = 1.5
+        msg.transform.translation.y = 0.5
+        msg.transform.translation.z = 1.5
         
         # BATTERY
         #msg = BatteryState()
@@ -49,8 +49,8 @@ def fake_publisher():
         
         # Log and publish the message
         #rospy.loginfo("Publishing fake payload message")
-        rospy.loginfo("Publishing fake ObjectHypothesisWithPose message: %s", msg)
-        #rospy.loginfo("Publishing fake camera pose message")
+        #rospy.loginfo("Publishing fake ObjectHypothesisWithPose message: %s", msg)
+        rospy.loginfo("Publishing fake camera pose message")
         #rospy.loginfo("Publishing battery percentage: %f", battery_msg.percentage)
         pub.publish(msg)
 

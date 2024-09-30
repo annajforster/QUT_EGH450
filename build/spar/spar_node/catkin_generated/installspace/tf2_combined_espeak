@@ -7,6 +7,7 @@ import tf2_ros
 from std_msgs.msg import Time
 from geometry_msgs.msg import TransformStamped
 from vision_msgs.msg import ObjectHypothesisWithPose
+from std_msg.msg import String
 
 # Global Variables
 tfbr = None
@@ -55,15 +56,15 @@ def callback_target_found(msg_in):
 	pass
 
 # Step 2 calling callback function for solve_pnp subscriber 
-def camera_callback(data):
+def camera_callback(msg):
 
 	try: 
 		# Step 3: Extracting pose data from message  
 		#pose_local = data.pose.pose
 
-		marker_id = int(data.child_frame_id)
+		marker_id = int(msg.child_frame_id)
 
-		transform_coor = data.transform
+		transform_coor = msg.transform
 
 		# Step 4: calling tf2_target function and passing through pose data from solve_pnp
 		# Calling the transform function and passing through pose data
@@ -79,7 +80,6 @@ def camera_callback(data):
 		# Step 12: (next three rospy.loginfo lines)
 		# Dump information to screen
 		rospy.loginfo("Found target at the following location in the world:")
-		rospy.loginfo("Found ArUco Marker: {}".format(marker_id))
 
         # This is the infromation that we want for the ROI.
 		rospy.loginfo("[x: %0.2f; y: %0.2f; z: %0.2f]" % (t.transform.translation.x,
@@ -90,7 +90,6 @@ def camera_callback(data):
 		
 		# Step 13: Extracting transform coordinates 
 		detection = ObjectHypothesisWithPose()
-		#detection = data
 		detection.id = marker_id
 		detection.pose.pose.position.x = t.transform.translation.x
 		detection.pose.pose.position.y = t.transform.translation.y
@@ -99,6 +98,16 @@ def camera_callback(data):
 		# Step 14: publishing coordinates 
 		pub_detection.publish(detection)
 		rospy.loginfo("ROI coordinates sent.")
+
+		# Creating the message for GCS espeak
+		speaker = String()
+		speaker.data = "[id: %0.2f; x: %0.2f; y: %0.2f; z: %0.2f]" % (marker_id, t.transform.translation.x,
+                            t.transform.translation.y,
+                            t.transform.translation.z)
+
+		# Publishing to GCS for espeak
+		pub_speaker.publish(speaker)
+
 
 	except (tf2_ros.LookupException, tf2_ros.ConnectivityException, tf2_ros.ExtrapolationException) as e:
 		rospy.logwarn(e)
@@ -117,14 +126,16 @@ if __name__ == '__main__':
 	tfln = tf2_ros.TransformListener(tfBuffer)
 
 	# Step 1: Subscriber for solve_pnp camera pose estimate 
-	#camera_pose = rospy.Subscriber('/camera/pose', ObjectHypothesisWithPose, camera_callback, queue_size=2)
-	camera_pose = rospy.Subscriber('/camera/pose', TransformStamped, camera_callback, queue_size=10)
+	camera_pose = rospy.Subscriber('/camera/pose', ObjectHypothesisWithPose, camera_callback, queue_size=2)
 	rospy.loginfo("Camera Pose received")
 
 	# Publisher for ROI to demo_wp_roi
-	pub_detection = rospy.Publisher('/target_detection/roi', ObjectHypothesisWithPose, queue_size=10)
+	pub_detection = rospy.Publisher('/target_detection/roi', ObjectHypothesisWithPose, queue_size=2)
 	rospy.loginfo("Camera Pose passed to Waypoint Scripts")
 
+	# Publisher for epeak to GCS
+	pub_speaker = rospy.Publisher('spoken_text', String)
+	rospy.loginfo("Detection information passed to espeak")
 
 	# Give the nodes a few seconds to configure
 	rospy.sleep(rospy.Duration(2))
@@ -139,3 +150,6 @@ if __name__ == '__main__':
 	# then we can exit
 	rospy.sleep(rospy.Duration(2))
 	rospy.loginfo("tf2_combined completed")
+
+
+	# 
