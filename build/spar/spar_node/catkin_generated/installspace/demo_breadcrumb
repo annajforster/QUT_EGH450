@@ -1,7 +1,5 @@
 #!/usr/bin/env python3
 
-# integration with ROI, breadcrumb and RVIZ markers
-
 from argparse import ArgumentError
 import sys
 from math import *
@@ -19,8 +17,6 @@ from spar_msgs.msg import FlightMotionAction, FlightMotionGoal
 from vision_msgs.msg import ObjectHypothesisWithPose
 
 from sensor_msgs.msg import BatteryState
-
-from visualization_msgs.msg import Marker   
 
 # Libraries for interfacing with BreadCrumb
 from breadcrumb.srv import RequestPath
@@ -90,13 +86,13 @@ class Guidance():
 		# Save the input waypoints
 		self.waypoints = waypoints
 		# Display the full path
-		self.display_path(waypoints,"/guidance/fullPath")
+		#self.display_path(waypoints,"/guidance/fullPath")
 
 ##################### changed tolerance ##########################
 		# Make some space to record down our current location
 		self.current_location = Point()
 		# Set our linear and rotational velocities for the flight
-		self.vel_linear = rospy.get_param("~vel_linear", 0.9)
+		self.vel_linear = rospy.get_param("~vel_linear", 0.2)
 		
 		#self.vel_yaw = rospy.get_param("~vel_yaw", 0.2)
 		# Set our position and yaw waypoint accuracies
@@ -141,15 +137,10 @@ class Guidance():
 			# from a diversion to the correct location
 			# XXX: These topics could be hard-coded to avoid using a launch file
 			self.sub_pose = rospy.Subscriber("/mavros/pose", PoseStamped, self.callback_pose)
-			
 			# Subscriber to catch "ROI" diversion commands
 			self.sub_roi = rospy.Subscriber("/target_detection/roi", ObjectHypothesisWithPose, self.callback_detection)
-			
 			# Subscriber to battery topic for future safety landing automation 
 			self.sub_battery = rospy.Subscriber("/mavros/battery", BatteryState, self.callback_battery)
-			
-			# Publisher for sending marker info to RVIZ 
-			self.marker_pub = rospy.Publisher('visualization_marker', Marker, queue_size=3, latch=True)
 
 			# XXX: Could have a publisher to output our waypoint progress
 			# throughout the flight (should publish each time the waypoint
@@ -223,140 +214,6 @@ class Guidance():
 		# rospy.loginfo("Updating Pose UAV...")
 		self.current_location = msg_in.pose.position
 
-	# RVIZ Target 1
-	def target_one(self, data):
-		location = data.pose.pose
-
-		# # Message header variables 
-		msg_out = Marker()
-		msg_out.header.frame_id = "map"
-		msg_out.header.stamp = rospy.Time.now() 
-
-		# Marker variables
-		msg_out.ns = "Target 1"               # Namespace 
-		msg_out.id = 0                      # ID of the marker
-		msg_out.type = Marker.CYLINDER      # Shape choice 
-		msg_out.action = Marker.ADD         # Action is to add / create a new marker
-		msg_out.lifetime = rospy.Time(0)    # Lifetime set to Time(0) will make it last forever
-		msg_out.frame_locked = True         # Locking frame in place in RVIZ
-
-		
-		# Marker Global coordinates 
-		msg_out.pose.position.x = location.position.x
-		msg_out.pose.position.y = location.position.y
-		msg_out.pose.position.z = 0.0
-		msg_out.pose.orientation.w = 1.0
-		msg_out.pose.orientation.x = 0.0
-		msg_out.pose.orientation.y = 0.0
-		msg_out.pose.orientation.z = 0.0
-
-		# Setting scale of marker (m)
-		msg_out.scale.x = 0.2
-		msg_out.scale.y = 0.2
-		msg_out.scale.z = 0.5
-
-		# Make the cylinder a blue colour
-		msg_out.color.r = (0/255)
-		msg_out.color.g = (0/255)
-		msg_out.color.b = (255/255)
-		msg_out.color.a = 1.0
-
-		# Publishing the marker to RVIZ 
-		rospy.loginfo('Publishing Target 1 Marker to RVIZ')
-		self.marker_pub.publish(msg_out)
-
-		rospy.loginfo("[x: %0.2f; y: %0.2f]" % (location.position.x,
-						location.position.y))
-
-	# RVIZ Target 2
-	def target_two (self, data):
-		location = data.pose.pose
-
-		# # Message header variables 
-		msg_out = Marker()
-		msg_out.header.frame_id = "map"
-		msg_out.header.stamp = rospy.Time.now() 
-
-		# Marker variables
-		msg_out.ns = "Target 2"             # Namespace 
-		msg_out.id = 0                      # ID of the marker
-		msg_out.type = Marker.SPHERE      # Shape choice 
-		msg_out.action = Marker.ADD         # Action is to add / create a new marker
-		msg_out.lifetime = rospy.Time(0)    # Lifetime set to Time(0) will make it last forever
-		msg_out.frame_locked = True         # Locking frame in place in RVIZ
-
-		
-		# Marker Global coordinates 
-		msg_out.pose.position.x = location.position.x
-		msg_out.pose.position.y = location.position.y
-		msg_out.pose.position.z = 0.0
-		msg_out.pose.orientation.w = 1.0
-		msg_out.pose.orientation.x = 0.0
-		msg_out.pose.orientation.y = 0.0
-		msg_out.pose.orientation.z = 0.0
-
-		# Setting scale of marker (m)
-		msg_out.scale.x = 0.2
-		msg_out.scale.y = 0.4
-		msg_out.scale.z = 0.2
-
-		# Make the cube a black colour
-		msg_out.color.r = (0/255)
-		msg_out.color.g = (0/255)
-		msg_out.color.b = (0/255)
-		msg_out.color.a = 1.0
-
-		# Publishing the marker to RVIZ 
-		rospy.loginfo('Publishing Target 2 Marker to RVIZ')
-		self.marker_pub.publish(msg_out)
-
-		rospy.loginfo("[x: %0.2f; y: %0.2f]" % (location.position.x,
-						location.position.y))
-
-	# RVIZ Markers
-	def marker_vis (self, data):
-		location = data.pose.pose
-
-		# # Message header variables 
-		msg_out = Marker()
-		msg_out.header.frame_id = "map"
-		msg_out.header.stamp = rospy.Time.now() 
-
-		# Marker variables
-		msg_out.ns = "ArUco"               # Namespace 
-		msg_out.id = 0                      # ID of the marker
-		msg_out.type = Marker.CUBE          # Shape choice 
-		msg_out.action = Marker.ADD         # Action is to add / create a new marker
-		msg_out.lifetime = rospy.Time(0)    # Lifetime set to Time(0) will make it last forever
-		msg_out.frame_locked = True         # Locking frame in place in RVIZ
-
-		
-		# Marker Global coordinates 
-		msg_out.pose.position.x = location.position.x
-		msg_out.pose.position.y = location.position.y
-		msg_out.pose.position.z = 0.0
-		msg_out.pose.orientation.w = 1.0
-		msg_out.pose.orientation.x = 0.0
-		msg_out.pose.orientation.y = 0.0
-		msg_out.pose.orientation.z = 0.0
-
-		# Setting scale of marker (m)
-		msg_out.scale.x = 0.2
-		msg_out.scale.y = 0.2
-		msg_out.scale.z = 0.1
-
-		# Make the square a white colour
-		msg_out.color.r = (255/255)
-		msg_out.color.g = (255/255)
-		msg_out.color.b = (255/255)
-		msg_out.color.a = 1.0
-
-		# Publishing the marker to RVIZ 
-		rospy.loginfo('Publishing ArUco Marker to RVIZ')
-		self.marker_pub.publish(msg_out)
-
-		rospy.loginfo("[x: %0.2f; y: %0.2f]" % (location.position.x,
-						location.position.y))
 
 	# Function for directing marker/target global coordinates 
 	def callback_detection(self, msg_in):
@@ -366,14 +223,12 @@ class Guidance():
 		# Calling marker function to store coordinates in marker array
 		if 0 <= self.id <= 100:
 			rospy.loginfo("Saving marker coordinates into the array")
-			self.marker_vis(msg_in)		# Trigger RVIZ marker
 			self.marker_storage(msg_in)
 
 		elif self.id == 101:
 			if not self.target1:
 				self.target1 = True
 				self.payload_id = self.id - 100
-				self.target_one(msg_in)		# Trigger RVIZ marker
 				rospy.loginfo("Triggering ROI Diversion for Target 1")
 				self.inspect_roi(msg_in)
 
@@ -381,7 +236,6 @@ class Guidance():
 			if not self.target2:
 				self.target2 = True
 				self.payload_id = self.id - 100
-				self.target_two(msg_in)		# Trigger RVIZ marker
 				rospy.loginfo("Triggering ROI Diversion for Target 2")
 				self.inspect_roi(msg_in)
 
@@ -436,7 +290,7 @@ class Guidance():
 
 		# Set the "diversion waypoint" (at yaw zero)
 		# dwp = [msg_in.pose.position.x, msg_in.pose.position.y, msg_in.pose.position.z, 0.0]
-		dwp = [msg_in.pose.position.x, msg_in.pose.position.y + 0.05, 0.7, 0.0] #self.current_location.z, 0.0]
+		dwp = [msg_in.pose.position.x, msg_in.pose.position.y, self.current_location.z, 0.0]
 		# Set the "return waypoint" (at yaw zero)
 		rwp = [self.current_location.x, self.current_location.y, self.current_location.z, 0.0]
 
@@ -727,7 +581,6 @@ def main(args):
 			 [-3.5, 2.0, surveyAltitude, 0.0],    # 1  r1
              [-3.5,-2.0, surveyAltitude, 0.0],    # 2  r1
              [-2.5,-2.0, surveyAltitude, 0.0],    # 3  r2
-			 [-2.5, 0.0, surveyAltitude, 0.0],    # 4  r2
              [-2.5, 2.0, surveyAltitude, 0.0],    # 4  r2
              [-1.5, 2.0, surveyAltitude, 0.0],    # 5  r3
              [-1.5,-2.0, surveyAltitude, 0.0],    # 6  r3
@@ -777,5 +630,4 @@ if __name__ == '__main__':
 		pass
 
 	print('Node Closed')
-
 
