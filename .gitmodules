@@ -16,6 +16,4 @@
 [submodule "src/depthai_publisher_updated"]
 	path = src/depthai_publisher_updated
 	url = git@github.com:annajforster/depthai_publisher_updated.git
-[submodule "gcs450"]
-	path = gcs450
-	url = git@github.com:annajforster/gcs450.git
+
