@@ -7,6 +7,7 @@ import tf2_ros
 from std_msgs.msg import Time
 from geometry_msgs.msg import TransformStamped
 from vision_msgs.msg import ObjectHypothesisWithPose
+from std_msgs.msg import String
 
 # Global Variables
 tfbr = None
@@ -96,9 +97,17 @@ def camera_callback(data):
 		detection.pose.pose.position.y = t.transform.translation.y
 		detection.pose.pose.position.z = t.transform.translation.z
 
-		# Step 14: publishing coordinates 
+		# Step 14a: publishing coordinates 
 		pub_detection.publish(detection)
 		rospy.loginfo("ROI coordinates sent.")
+
+		# Step 14b: Creating the message for GCS espeak
+		speaker = String()
+		speaker.data = "[id: %d; x: %0.2f; y: %0.2f]" % (marker_id, t.transform.translation.x,
+                            t.transform.translation.y)
+		
+		# Publishing to GCS for espeak
+		pub_speaker.publish(speaker)
 
 	except (tf2_ros.LookupException, tf2_ros.ConnectivityException, tf2_ros.ExtrapolationException) as e:
 		rospy.logwarn(e)
@@ -125,6 +134,9 @@ if __name__ == '__main__':
 	pub_detection = rospy.Publisher('/target_detection/roi', ObjectHypothesisWithPose, queue_size=10)
 	rospy.loginfo("Camera Pose passed to Waypoint Scripts")
 
+	# Publisher for epeak to GCS
+	pub_speaker = rospy.Publisher('spoken_text', String, queue_size=10)
+	rospy.loginfo("Detection information passed to espeak")
 
 	# Give the nodes a few seconds to configure
 	rospy.sleep(rospy.Duration(2))
