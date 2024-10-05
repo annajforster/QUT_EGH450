@@ -21,17 +21,17 @@ servo = AngularServo(servo_pin, min_angle=0, max_angle=180, min_pulse_width=0.00
 #    subprocess.run(['espeak', text])
 
 
-# Publisher for the text to be spoken
-speak_pub = None
+# # Publisher for the text to be spoken
+# speak_pub = None
 
-# Function to vocalize text using espeak and publish the text to a ROS topic
-def speak(text):
-    global speak_pub
-    subprocess.run(['espeak', text])  # Vocalize the text
-    if speak_pub:
-        speak_pub.publish(text)  # Publish the text to the ROS topic
+# # Function to vocalize text using espeak and publish the text to a ROS topic
+# def speak(text):
+#     global speak_pub
+#     subprocess.run(['espeak', text])  # Vocalize the text
+#     if speak_pub:
+#         speak_pub.publish(text)  # Publish the text to the ROS topic
 
-#
+# #
 #
 def callback(msg):
     rospy.loginfo("Message received")
@@ -39,25 +39,32 @@ def callback(msg):
     #Original position: 0b00000000 (0)
     #Drop Epi pen:      0b00000001 (1)
     #Drop Tracker:      0b00000010 (2)
+
+    speaker = String()
 #
     if msg.data == 1:
-        servo.angle = 45
-        rospy.sleep(rospy.Duration(3))
-        servo.angle = None
-        rospy.loginfo("Epi-Pen was deployed")
-        speak("Epi-Pen was deployed")
-#    
-    elif msg.data == 2:
         servo.angle = 135
         rospy.sleep(rospy.Duration(3))
         servo.angle = None
         rospy.loginfo("Tracker was deployed")
-        speak("Tracker was deployed")
+        speaker.data = "[Tracker was deployed]"
+        #speak("Tracker was deployed")
+#    
+    elif msg.data == 2:
+        servo.angle = 45
+        rospy.sleep(rospy.Duration(3))
+        servo.angle = None
+        rospy.loginfo("Epi-Pen was deployed")
+        speaker.data = "[Epi-Pen was deployed]"
+        #speak("Epi-Pen was deployed")
 #
     else:
         rospy.loginfo("Unidentified message")
-        speak("Unidentified message")
-#
+        speaker.data = "[Unidentified message]"
+        #speak("Unidentified message")
+#   
+# Publish espeak data to GCS
+    speak_pub.publish(speaker)
 #
 def main():
     global speak_pub 

@@ -59,8 +59,8 @@ endif()
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
   file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/egh450_target_solvepnp" TYPE PROGRAM FILES
     "/home/uavteam2/QUT_EGH450/src/egh450_target_solvepnp/scripts/pose_estimator_all"
-    "/home/uavteam2/QUT_EGH450/src/egh450_target_solvepnp/scripts/pe_aruco"
-    "/home/uavteam2/QUT_EGH450/src/egh450_target_solvepnp/scripts/pe_objects"
+    "/home/uavteam2/QUT_EGH450/src/egh450_target_solvepnp/scripts/pose_estimator_a.py"
+    "/home/uavteam2/QUT_EGH450/src/egh450_target_solvepnp/scripts/pose_estimator_b.py"
     )
 endif()
 

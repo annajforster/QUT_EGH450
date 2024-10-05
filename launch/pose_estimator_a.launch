@@ -1,6 +1,6 @@
 <?xml version='1.0'?>
 <launch>
-	<node pkg="egh450_target_solvepnp" type="pose_estimator" name="pose_estimator" clear_params="true" output="screen">
+	<node pkg="egh450_target_solvepnp" type="pose_estimator_a.py" name="pose_estimator_a" clear_params="true" output="screen">
 		<!-- Radius of the circle target in meters -->
 
 		<!-- Setting this to true will tell the program to use "~image_raw" + "/compressed" instead -->
@@ -16,3 +16,4 @@
 		-->
 	</node>
 </launch>
+

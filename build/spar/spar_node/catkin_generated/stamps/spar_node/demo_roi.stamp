@@ -96,7 +96,7 @@ class Guidance():
 		# Make some space to record down our current location
 		self.current_location = Point()
 		# Set our linear and rotational velocities for the flight
-		self.vel_linear = rospy.get_param("~vel_linear", 0.9)
+		self.vel_linear = rospy.get_param("~vel_linear", 0.5)
 		
 		#self.vel_yaw = rospy.get_param("~vel_yaw", 0.2)
 		# Set our position and yaw waypoint accuracies
@@ -140,7 +140,7 @@ class Guidance():
 			# Callback to save "current location" such that we can perform and return
 			# from a diversion to the correct location
 			# XXX: These topics could be hard-coded to avoid using a launch file
-			self.sub_pose = rospy.Subscriber("/mavros/pose", PoseStamped, self.callback_pose)
+			self.sub_pose = rospy.Subscriber("mavros/local_position/pose", PoseStamped, self.callback_pose)
 			
 			# Subscriber to catch "ROI" diversion commands
 			self.sub_roi = rospy.Subscriber("/target_detection/roi", ObjectHypothesisWithPose, self.callback_detection)

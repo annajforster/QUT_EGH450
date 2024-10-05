@@ -1,18 +1,19 @@
 <?xml version='1.0'?>
 <launch>
-	<node pkg="egh450_target_solvepnp" type="pe_objects" name="pe_objects" clear_params="true" output="screen">
+	<node pkg="egh450_target_solvepnp" type="pose_estimator_b.py" name="pose_estimator_b" clear_params="true" output="screen">
 		<!-- Radius of the circle target in meters -->
 
 		<!-- Setting this to true will tell the program to use "~image_raw" + "/compressed" instead -->
 		<param name="use_compressed" value="true" type="bool"/>
 
 		<!-- Topic remappings to connect to the correct camera -->
-		<remap from="~camera_info" to="/processor_node/camera/camera_info"/>
-		<remap from="~image_raw" to="/processor_node/image/raw"/>
-		<remap from="~image_raw/compressed" to="/processor_node/detection/compressed"/>
+		<remap from="~camera_info" to="/depthai_node/camera/camera_info"/>
+		<remap from="~image_raw" to="/depthai_node/image/raw"/>
+		<remap from="~image_raw/compressed" to="/depthai_node/detection/compressed"/>
 		<!--
 		<remap from="~debug/image_raw/compressed" to="/debug_compressed"/>
 		<remap from="~overlay/image_raw/compressed" to="/overlay_compressed"/>
 		-->
 	</node>
 </launch>
+

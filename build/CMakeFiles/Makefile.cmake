@@ -52,6 +52,7 @@ set(CMAKE_MAKEFILE_DEPENDS
   "/home/uavteam2/QUT_EGH450/src/depthai_publisher_updated/scripts/dai_detector_old"
   "/home/uavteam2/QUT_EGH450/src/depthai_publisher_updated/scripts/dai_publisher"
   "/home/uavteam2/QUT_EGH450/src/depthai_publisher_updated/scripts/dai_publisher_yolov5_runner_2"
+  "/home/uavteam2/QUT_EGH450/src/depthai_publisher_updated/scripts/yolov5_mission2"
   "/home/uavteam2/QUT_EGH450/src/depthai_publisher_updated/setup.py"
   "/home/uavteam2/QUT_EGH450/src/egh450_target_solvepnp/CMakeLists.txt"
   "/home/uavteam2/QUT_EGH450/src/egh450_target_solvepnp/package.xml"
