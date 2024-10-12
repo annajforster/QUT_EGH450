@@ -31,8 +31,8 @@ def fake_publisher():
         
         # DEMO_ROI
         msg = ObjectHypothesisWithPose()
-        msg.id = 101
-        msg.pose.pose.position = Point(x=-2.73, y=-2.55, z=0.0)
+        msg.id = 23
+        msg.pose.pose.position = Point(x=2.73, y=-2.55, z=0.0)
         msg.pose.pose.orientation = Quaternion(x=0.0, y=0.0, z=0.0, w=1.0)
         
         # CAMERA POSE ESTIMATE

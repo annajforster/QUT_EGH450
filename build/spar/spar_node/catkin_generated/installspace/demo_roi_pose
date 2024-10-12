@@ -49,7 +49,8 @@ class Guidance():
 
 		# Internal counter to see what waypoint were are up to
 		self.waypoint_counter = 0
-		self.waypoint_counter = 0
+		self.refine_id = 0
+		
 		
 
 		#Aruco storage and landing logic
@@ -81,6 +82,9 @@ class Guidance():
 		#Create a publisher for payload commands
 		self.pub_payload = rospy.Publisher('payloadcommands', UInt8, queue_size=2)
 
+		# Create a publisher to request a refined pose from the image subsystem
+		self.pub_pose_refined = rospy.Publisher('refined_pose', UInt8, queue_size=2)
+
 		# Set a flag to indicate that we are doing a specific inspection
 		# and that we are not following our waypoint list
 		# This will stop our "waypoint is reached" callback from firing
@@ -96,7 +100,7 @@ class Guidance():
 		# Make some space to record down our current location
 		self.current_location = Point()
 		# Set our linear and rotational velocities for the flight
-		self.vel_linear = rospy.get_param("~vel_linear", 0.5)
+		self.vel_linear = rospy.get_param("~vel_linear", 0.4)
 		
 		#self.vel_yaw = rospy.get_param("~vel_yaw", 0.2)
 		# Set our position and yaw waypoint accuracies
@@ -140,8 +144,7 @@ class Guidance():
 			# Callback to save "current location" such that we can perform and return
 			# from a diversion to the correct location
 			# XXX: These topics could be hard-coded to avoid using a launch file
-			#self.sub_pose = rospy.Subscriber("/mavros/local_position/pose", PoseStamped, self.callback_pose)
-			self.sub_pose = rospy.Subscriber("uavasr/pose", PoseStamped, self.callback_pose)
+			self.sub_pose = rospy.Subscriber("/mavros/local_position/pose", PoseStamped, self.callback_pose)
 			
 			# Subscriber to catch "ROI" diversion commands
 			self.sub_roi = rospy.Subscriber("/target_detection/roi", ObjectHypothesisWithPose, self.callback_detection)
@@ -184,6 +187,9 @@ class Guidance():
 		# If we haven't returned false yet, then waypoints look good!
 		return True
 
+	def refine_pose(self):
+		# This function will refine the pose of the UAV to be more accurate before payload is deployed or a maker is landed on
+		a = b
 
 	# This function will check if a waypoint is in the format we expect
 	def check_waypoint(self, wp):
@@ -256,10 +262,10 @@ class Guidance():
 		msg_out.scale.y = 0.2
 		msg_out.scale.z = 0.5
 
-		# Colour - pink 
-		msg_out.color.b = (127/255)
+		# Colour
+		msg_out.color.r = (127/255)
 		msg_out.color.g = (0/255)
-		msg_out.color.r = (255/255)
+		msg_out.color.b = (255/255)
 		msg_out.color.a = 1.0
 
 		# Publishing the marker to RVIZ 
@@ -299,12 +305,12 @@ class Guidance():
 		# Setting scale of marker (m)
 		msg_out.scale.x = 0.2
 		msg_out.scale.y = 0.2
-		msg_out.scale.z = 0.5
+		msg_out.scale.z = 0.2
 
-		# Colour - green 
-		msg_out.color.b = (128/255)
+		# Colour 
+		msg_out.color.r = (128/255)
 		msg_out.color.g = (255/255)
-		msg_out.color.r = (0/255)
+		msg_out.color.b = (0/255)
 		msg_out.color.a = 1.0
 
 		# Publishing the marker to RVIZ 
@@ -347,9 +353,9 @@ class Guidance():
 		msg_out.scale.z = 0.1
 
 		# Make the square a white colour
-		msg_out.color.b = (255/255)
-		msg_out.color.g = (255/255)
 		msg_out.color.r = (255/255)
+		msg_out.color.g = (255/255)
+		msg_out.color.b = (255/255)
 		msg_out.color.a = 1.0
 
 		# Publishing the marker to RVIZ 
@@ -391,9 +397,9 @@ class Guidance():
 		msg_out.scale.z = 0.1
 
 		# Make the square a blue colour
-		msg_out.color.b = (255/255)
-		msg_out.color.g = (0/255)
 		msg_out.color.r = (0/255)
+		msg_out.color.g = (0/255)
+		msg_out.color.b = (255/255)
 		msg_out.color.a = 1.0        # Full opacity
 
 		# Publishing the marker to RVIZ 
@@ -411,15 +417,12 @@ class Guidance():
 		# Calling marker function to store coordinates in marker array
 		if 0 <= self.id <= 100:
 			rospy.loginfo("Saving marker coordinates into the array")
-			#self.marker_vis(msg_in)		# Trigger RVIZ marker
+			self.marker_vis(msg_in)		# Trigger RVIZ marker
 			self.marker_storage(msg_in)
 
-			if  self.id == self.landing_marker: 
-				rospy.loginfo("Landing marker has been located") 
-				self.marker_land(msg_in)
-			else:
-				rospy.loginfo("ArUco Marker has been located")
-				self.marker_vis(msg_in)		# Trigger RVIZ marker
+		elif self.id == self.landing_marker: 
+			rospy.loginfo("Landing marker has been located") 
+			self.maker_land(msg_in)
 
 		elif self.id == 101:
 			if not self.target1:
@@ -506,7 +509,8 @@ class Guidance():
 
 		rospy.loginfo("Reached diversion ROI!")
 		# CODE FOR HOVER AND PAYLOAD DEPLOYMENT
-
+		self.refine_id = UInt8(self.payload_id)
+		self.pub_pose_refined.publish(self.refine_id.data)
 		rospy.sleep(rospy.Duration(6))
 		
 		#self.payload_id = UInt8()
@@ -804,7 +808,7 @@ def main(args):
              [-1.5, 2.0, surveyAltitude, 0.0],    # 5  r3
              [-1.5,-2.0, surveyAltitude, 0.0],    # 6  r3
              [-0.5,-2.0, surveyAltitude, 0.0],    # 7  r4
-             [-0.5, 2.0, surveyAltitude, 0.0],    # 8  r4
+             [-0.5, 2.0, surveyAltitude, 0.0]    # 8  r4
              [ 0.5, 2.0, surveyAltitude, 0.0],    # 9  r5
              [ 0.5,-2.0, surveyAltitude, 0.0],    # 10 r5
              [ 1.5,-2.0, surveyAltitude, 0.0],    # 11 r6
@@ -849,6 +853,3 @@ if __name__ == '__main__':
 		pass
 
 	print('Node Closed')
-
-
-

@@ -75,7 +75,7 @@ class Guidance():
 		rospy.loginfo("Altitude is set to: {}".format(surveyAltitude))
 
 		######## HARD CODED LANDING MARKER ID AND COORDINATES ##########
-		self.landing_marker = 72
+		self.landing_marker = 7
 		#self.markers[self.landing_marker,:] = [1.5,-1.5]
 		
 		#Create a publisher for payload commands
@@ -96,7 +96,7 @@ class Guidance():
 		# Make some space to record down our current location
 		self.current_location = Point()
 		# Set our linear and rotational velocities for the flight
-		self.vel_linear = rospy.get_param("~vel_linear", 1.5)
+		self.vel_linear = rospy.get_param("~vel_linear", 0.5)
 		
 		#self.vel_yaw = rospy.get_param("~vel_yaw", 0.2)
 		# Set our position and yaw waypoint accuracies
@@ -140,7 +140,8 @@ class Guidance():
 			# Callback to save "current location" such that we can perform and return
 			# from a diversion to the correct location
 			# XXX: These topics could be hard-coded to avoid using a launch file
-			self.sub_pose = rospy.Subscriber("/mavros/local_position/pose", PoseStamped, self.callback_pose)
+			#self.sub_pose = rospy.Subscriber("/mavros/local_position/pose", PoseStamped, self.callback_pose)
+			self.sub_pose = rospy.Subscriber("uavasr/pose", PoseStamped, self.callback_pose)
 			
 			# Subscriber to catch "ROI" diversion commands
 			self.sub_roi = rospy.Subscriber("/target_detection/roi", ObjectHypothesisWithPose, self.callback_detection)
@@ -255,10 +256,10 @@ class Guidance():
 		msg_out.scale.y = 0.2
 		msg_out.scale.z = 0.5
 
-		# Make the cylinder a blue colour
-		msg_out.color.r = (0/255)
+		# Colour - pink 
+		msg_out.color.b = (127/255)
 		msg_out.color.g = (0/255)
-		msg_out.color.b = (255/255)
+		msg_out.color.r = (255/255)
 		msg_out.color.a = 1.0
 
 		# Publishing the marker to RVIZ 
@@ -280,7 +281,7 @@ class Guidance():
 		# Marker variables
 		msg_out.ns = "Target 2"             # Namespace 
 		msg_out.id = 0                      # ID of the marker
-		msg_out.type = Marker.SPHERE      # Shape choice 
+		msg_out.type = Marker.CYLINDER      # Shape choice 
 		msg_out.action = Marker.ADD         # Action is to add / create a new marker
 		msg_out.lifetime = rospy.Time(0)    # Lifetime set to Time(0) will make it last forever
 		msg_out.frame_locked = True         # Locking frame in place in RVIZ
@@ -297,13 +298,13 @@ class Guidance():
 
 		# Setting scale of marker (m)
 		msg_out.scale.x = 0.2
-		msg_out.scale.y = 0.4
-		msg_out.scale.z = 0.2
+		msg_out.scale.y = 0.2
+		msg_out.scale.z = 0.5
 
-		# Make the cube a black colour
+		# Colour - green 
+		msg_out.color.b = (128/255)
+		msg_out.color.g = (255/255)
 		msg_out.color.r = (0/255)
-		msg_out.color.g = (0/255)
-		msg_out.color.b = (0/255)
 		msg_out.color.a = 1.0
 
 		# Publishing the marker to RVIZ 
@@ -346,13 +347,57 @@ class Guidance():
 		msg_out.scale.z = 0.1
 
 		# Make the square a white colour
-		msg_out.color.r = (255/255)
-		msg_out.color.g = (255/255)
 		msg_out.color.b = (255/255)
+		msg_out.color.g = (255/255)
+		msg_out.color.r = (255/255)
 		msg_out.color.a = 1.0
 
 		# Publishing the marker to RVIZ 
 		rospy.loginfo('Publishing ArUco Marker to RVIZ')
+		self.marker_pub.publish(msg_out)
+
+		rospy.loginfo("[x: %0.2f; y: %0.2f]" % (location.position.x,
+						location.position.y))
+		
+	# For landing marker 	
+	def marker_land (self, data):
+		location = data.pose.pose
+
+		# # Message header variables 
+		msg_out = Marker()
+		msg_out.header.frame_id = "map"
+		msg_out.header.stamp = rospy.Time.now() 
+
+		# Marker variables
+		msg_out.ns = "Landing ArUco"        # Namespace 
+		msg_out.id = 0                      # ID of the marker
+		msg_out.type = Marker.CUBE          # Shape choice 
+		msg_out.action = Marker.ADD         # Action is to add / create a new marker
+		msg_out.lifetime = rospy.Time(0)    # Lifetime set to Time(0) will make it last forever
+		msg_out.frame_locked = True         # Locking frame in place in RVIZ
+
+		# Marker Global coordinates 
+		msg_out.pose.position.x = location.position.x
+		msg_out.pose.position.y = location.position.y
+		msg_out.pose.position.z = 0.0
+		msg_out.pose.orientation.w = 1.0
+		msg_out.pose.orientation.x = 0.0
+		msg_out.pose.orientation.y = 0.0
+		msg_out.pose.orientation.z = 0.0
+
+		# Setting scale of marker (m)
+		msg_out.scale.x = 0.2
+		msg_out.scale.y = 0.2
+		msg_out.scale.z = 0.1
+
+		# Make the square a blue colour
+		msg_out.color.b = (255/255)
+		msg_out.color.g = (0/255)
+		msg_out.color.r = (0/255)
+		msg_out.color.a = 1.0        # Full opacity
+
+		# Publishing the marker to RVIZ 
+		rospy.loginfo('Publishing Landing ArUco Marker to RVIZ')
 		self.marker_pub.publish(msg_out)
 
 		rospy.loginfo("[x: %0.2f; y: %0.2f]" % (location.position.x,
@@ -366,8 +411,15 @@ class Guidance():
 		# Calling marker function to store coordinates in marker array
 		if 0 <= self.id <= 100:
 			rospy.loginfo("Saving marker coordinates into the array")
-			self.marker_vis(msg_in)		# Trigger RVIZ marker
+			#self.marker_vis(msg_in)		# Trigger RVIZ marker
 			self.marker_storage(msg_in)
+
+			if  self.id == self.landing_marker: 
+				rospy.loginfo("Landing marker has been located") 
+				self.marker_land(msg_in)
+			else:
+				rospy.loginfo("ArUco Marker has been located")
+				self.marker_vis(msg_in)		# Trigger RVIZ marker
 
 		elif self.id == 101:
 			if not self.target1:
@@ -408,6 +460,7 @@ class Guidance():
 		self.batt_per = msg_in.percentage  
         
 		if self.batt_per <= self.batt_check:
+		
 			if not self.battery: 
 				self.battery = True
 				
@@ -605,7 +658,10 @@ class Guidance():
 							self.breadcrumbWPSnextIndex +=1
 						else:
 							# If we finish with the breadcrumb waypoints we increase normal waypoints
+							
+						    
 							self.waypoint_counter += 1
+							
 							self.breadcrumbMode = False
 				
 					# rospy.loginfo("land_staging logical check: Waypoints complete: %s, self.land_staging: %s",self.waypoint_counter < (len(self.waypoints)), self.land_staging)
@@ -748,15 +804,15 @@ def main(args):
              [-1.5, 2.0, surveyAltitude, 0.0],    # 5  r3
              [-1.5,-2.0, surveyAltitude, 0.0],    # 6  r3
              [-0.5,-2.0, surveyAltitude, 0.0],    # 7  r4
-             [-0.5, 2.0, surveyAltitude, 0.0]]    # 8  r4
-            #  [ 0.5, 2.0, surveyAltitude, 0.0],    # 9  r5
-            #  [ 0.5,-2.0, surveyAltitude, 0.0],    # 10 r5
-            #  [ 1.5,-2.0, surveyAltitude, 0.0],    # 11 r6
-            #  [ 1.5, 2.0, surveyAltitude, 0.0],    # 12 r6
-            #  [ 2.5, 2.0, surveyAltitude, 0.0],    # 13 r7
-            #  [ 2.5,-2.0, surveyAltitude, 0.0],    # 14 r7
-            #  [ 3.5,-2.0, surveyAltitude, 0.0],    # 15 r8
-            #  [ 3.5, 2.0, surveyAltitude, 0.0]]    # 16 r8
+             [-0.5, 2.0, surveyAltitude, 0.0],    # 8  r4
+             [ 0.5, 2.0, surveyAltitude, 0.0],    # 9  r5
+             [ 0.5,-2.0, surveyAltitude, 0.0],    # 10 r5
+             [ 1.5,-2.0, surveyAltitude, 0.0],    # 11 r6
+             [ 1.5, 2.0, surveyAltitude, 0.0],    # 12 r6
+             [ 2.5, 2.0, surveyAltitude, 0.0],    # 13 r7
+             [ 2.5,-2.0, surveyAltitude, 0.0],    # 14 r7
+             [ 3.5,-2.0, surveyAltitude, 0.0],    # 15 r8
+             [ 3.5, 2.0, surveyAltitude, 0.0]]    # 16 r8
 
 	# For 3 to 4m 
 	wpsR2 = [[ 0.0, 0.0, surveyAltitude, 0.0],	  # 0 takeoff

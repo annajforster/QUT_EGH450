@@ -32,6 +32,7 @@ servo = AngularServo(servo_pin, min_angle=0, max_angle=180, min_pulse_width=0.00
 #         speak_pub.publish(text)  # Publish the text to the ROS topic
 
 # #
+servo.angle = None
 #
 def callback(msg):
     rospy.loginfo("Message received")
@@ -58,6 +59,13 @@ def callback(msg):
         speaker.data = "[Epi-Pen was deployed]"
         #speak("Epi-Pen was deployed")
 #
+    elif msg.data == 3:
+        servo.angle = 90
+        rospy.sleep(rospy.Duration(3))
+        servo.angle = None
+        rospy.loginfo("payload ready")
+        speaker.data = "[Payload Ready]"
+#
     else:
         rospy.loginfo("Unidentified message")
         speaker.data = "[Unidentified message]"
@@ -77,7 +85,7 @@ def main():
     speak_pub = rospy.Publisher('spoken_text', String, queue_size=10)
     #
     rospy.Subscriber('payloadcommands', UInt8, callback)
-    rospy.loginfo("Message acted on")
+    rospy.loginfo("Message Ready")
     #
     # Keep the node alive
     rospy.spin()

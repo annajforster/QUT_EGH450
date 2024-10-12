@@ -67,6 +67,7 @@ set(CMAKE_MAKEFILE_DEPENDS
   "/home/uavteam2/QUT_EGH450/src/spar/spar_node/scripts/demo_breadcrumb"
   "/home/uavteam2/QUT_EGH450/src/spar/spar_node/scripts/demo_roi"
   "/home/uavteam2/QUT_EGH450/src/spar/spar_node/scripts/demo_roi_only"
+  "/home/uavteam2/QUT_EGH450/src/spar/spar_node/scripts/demo_roi_pose"
   "/home/uavteam2/QUT_EGH450/src/spar/spar_node/scripts/demo_wp"
   "/home/uavteam2/QUT_EGH450/src/spar/spar_node/scripts/demo_wp_roi"
   "/home/uavteam2/QUT_EGH450/src/spar/spar_node/scripts/goto"
