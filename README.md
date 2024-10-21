@@ -42,9 +42,9 @@ These are the steps for this:
 **Step 1: Generate SSH Key Pair**
 Where: Your Local Machine (VSCode)
 If you don’t already have an SSH key pair on your local machine, generate one:
-bash
+```bash
 ssh-keygen -t ed25519 -C "yourname"
-
+```
 This command creates a public (id_ssh.pub) and private key (id_ssh) on your local machine.
 
 **Step 2: Copy the Public Key to the Ubuntu Machine**
@@ -58,12 +58,12 @@ Please note: the group SSH key is under my username 'annajforster', do not remov
 ** Step 3. Configure VSCode for Remote SSH **
 Where: Your Local Machine (VSCode)
 Open the command palette in VSCode and select Remote-SSH: Connect to Host....
-
+```bash
 Host your-ubuntu-machine
     HostName <your-ubuntu-ip>
     User <your-username>
     IdentityFile ~/.ssh/your_ssh_filename
-
+```
 This tells VSCode how to connect to your Ubuntu machine via SSH.
 
 Any problems, try and troubleshoot using Git and GPT as most instructions are pretty accurate.
